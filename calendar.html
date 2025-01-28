@@ -7,54 +7,75 @@
     <title>Calendar</title>
 
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #2F3438; /* Match Notion dark mode */
+        html, body {
             margin: 0;
             padding: 0;
+            overflow: hidden; /* Prevent scrolling in Notion embed */
+            background-color: #2F3438;
+            height: 100%;
+            width: 100%;
+        }
+
+        /* More aggressive scroll removal for Notion */
+        html {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        html::-webkit-scrollbar {
+            width: 0;
+            height: 0;
+            display: none;
         }
 
         .wrapper {
             display: flex;
             align-items: center;
             justify-content: center;
-            flex-direction: column;
-            min-height: 100%;
+            height: 100vh;
+            width: 100vw;
+            margin: 0;
+            padding: 0;
+            position: fixed; /* Fix position to prevent scrolling issues */
+            top: 0;
+            left: 0;
         }
 
         #calendari {
-            margin: 0 auto;
-            font-size: 14px;
             position: relative;
-            overflow: hidden; /* Hide unnecessary scrollbars */
+            font-size: 14px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; /* Notion-like font stack */
         }
 
         table {
             border-collapse: collapse;
             table-layout: fixed;
-            background-color: #2F3438; /* Match Notion dark mode */
+            background-color: #f5f5f5;
             position: absolute;
-            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden; /* Ensure no white edges */
         }
 
         td, th {
             text-align: center;
-            background-color: #2F3438;
+            background-color: #f5f5f5;
+            border: none; /* Remove all borders */
         }
 
         th {
             padding: 10px;
-            background-color: #17684b; /* Slightly lighter green */
+            background-color: #2B6B53;
             color: #fff;
-            text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.2);
+            font-weight: 500;
+            border: none;
         }
 
         th .any {
             font-size: 12px;
             font-weight: normal;
             display: block;
-            text-shadow: none;
-            color: rgba(255, 255, 255, 0.5);
+            color: rgba(255, 255, 255, 0.7);
         }
 
         td {
@@ -62,26 +83,26 @@
         }
 
         td > span {
-            color: #bbb;
+            color: #555;
             padding: 10px;
             display: block;
-            border: 2px solid transparent;
-            transition: border 0.3s ease;
+            border: none;
+            transition: background-color 0.2s ease;
         }
 
         td:nth-child(even) > span {
-            background-color: rgba(255, 255, 255, 0.05);
+            background-color: rgba(0, 0, 0, 0.02);
         }
 
-        td:last-child > span, td:nth-child(6) > span {
-            color: #17684b; /* Updated green */
+        td:last-child > span,
+        td:nth-child(6) > span {
+            color: #2B6B53;
         }
 
         td.avui > span {
             font-weight: bold;
-            background-color: #17684b;
+            background-color: #2B6B53;
             color: #fff;
-            border: 2px solid rgba(0, 0, 0, 0.1);
         }
 
         td.fora > span {
@@ -91,67 +112,60 @@
         td > span:hover {
             background: #a57cb6;
             color: #fff;
+            cursor: pointer;
         }
 
         .boto-next, .boto-prev {
             background: rgba(0, 0, 0, 0.1);
             color: #fff;
-            font-family: inherit;
             border: none;
             font-size: 18px;
             font-weight: bold;
-            text-shadow: inherit;
-            padding: 2px 10px 5px 10px;
-            line-height: 1px;
             height: 30px;
             width: 30px;
-            vertical-align: middle;
             border-radius: 100%;
             position: absolute;
             top: 15px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
         }
 
-        .boto-next { right: 10px; padding-left: 13px; }
-        .boto-prev { left: 10px; padding-right: 13px; }
-        .boto-next:hover, .boto-prev:hover {
+        .boto-next { right: 10px; }
+        .boto-prev { left: 10px; }
+
+        .boto-next:hover,
+        .boto-prev:hover {
             background: rgba(0, 0, 0, 0.2);
         }
 
-        button:hover { cursor: pointer; }
-        button:focus { outline: none; }
-
-        /* Scrollbar styles */
-        #calendari::-webkit-scrollbar {
-            width: 0px;
-            height: 0px;
+        button:focus { 
+            outline: none; 
         }
 
-        #calendari:hover::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
+        /* Notion-specific animations */
+        .amagat-esquerra {
+            opacity: 0;
+            transform: translateX(-100%);
         }
 
-        #calendari::-webkit-scrollbar-thumb {
-            background-color: #555;
-            border-radius: 4px;
+        .amagat-dreta {
+            opacity: 0;
+            transform: translateX(100%);
         }
 
-        #calendari::-webkit-scrollbar-track {
-            background-color: #2F3438;
+        .actiu {
+            opacity: 1;
+            transform: translateX(0);
+            transition: all 0.3s ease;
         }
 
-        footer {
-            text-align: center;
-            color: #ddd;
-            font-weight: normal;
-            text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.2);
-            font-size: 0.8em;
-            padding: 20px;
-        }
-
-        footer a, footer a:link {
-            color: #fff;
-            text-decoration: none;
+        .inactiu {
+            opacity: 0;
+            transition: all 0.3s ease;
         }
     </style>
 </head>
@@ -160,30 +174,15 @@
         <div id="calendari"></div>
     </div>
     <script>
+        // JavaScript remains the same as previous version
         var mesos = [
-            'January',
-            'February',
-            'March',
-            'April',
-            'May',
-            'June',
-            'July',
-            'August',
-            'September',
-            'October',
-            'November',
-            'December'
+            'January', 'February', 'March', 'April', 'May', 'June',
+            'July', 'August', 'September', 'October', 'November', 'December'
         ];
 
-        var dies_abr = [
-            'Su',
-            'Mo',
-            'Tu',
-            'We',
-            'Th',
-            'Fr',
-            'Sa'
-        ];
+        var dies = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+        var dies_abr = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
 
         Number.prototype.pad = function(num) {
             var str = '';
@@ -204,9 +203,11 @@
             }
 
             var diff = data - new Date(original.getAttribute('data-actual'));
+
             diff = new Date(diff).getMonth();
 
             var e = document.createElement('table');
+
             e.className = diff === 0 ? 'amagat-esquerra' : 'amagat-dreta';
             e.innerHTML = '';
 
@@ -230,7 +231,7 @@
             boto_next.innerHTML = '&#9656;';
 
             titol.appendChild(boto_prev);
-            titol.appendChild(document.createElement('span')).innerHTML = 
+            titol.appendChild(document.createElement('span')).innerHTML =
                 mesos[data.getMonth()] + '<span class="any">' + data.getFullYear() + '</span>';
 
             titol.appendChild(boto_next);
@@ -257,8 +258,12 @@
             fila.innerHTML += '<th>' + dies_abr[0] + '</th>';
             e.appendChild(fila);
 
-            var inici_mes = new Date(data.getFullYear(), data.getMonth(), -1).getDay();
-            var actual = new Date(data.getFullYear(), data.getMonth(), -inici_mes);
+            var inici_mes =
+                new Date(data.getFullYear(), data.getMonth(), -1).getDay();
+
+            var actual = new Date(data.getFullYear(),
+                data.getMonth(),
+                -inici_mes);
 
             for (var s = 0; s < 6; s++) {
                 var fila = document.createElement('tr');
