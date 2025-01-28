@@ -9,8 +9,9 @@
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #121212; /* Dark background for dark mode */
-            color: #f5f5f5;
+            background-color: #2F3438; /* Match Notion dark mode */
+            margin: 0;
+            padding: 0;
         }
 
         .wrapper {
@@ -21,36 +22,31 @@
             min-height: 100%;
         }
 
-        button::-moz-focus-inner { 
-            border: 0;
-            padding: 0;
-        }
-
         #calendari {
             margin: 0 auto;
             font-size: 14px;
+            position: relative;
+            overflow: hidden; /* Hide unnecessary scrollbars */
         }
 
         table {
             border-collapse: collapse;
             table-layout: fixed;
-            background-color: #f5f5f5; /* Softer grayish-white background */
+            background-color: #2F3438; /* Match Notion dark mode */
             position: absolute;
+            overflow: hidden;
         }
 
         td, th {
             text-align: center;
-            background-color: #f5f5f5; /* Match the softer background */
+            background-color: #2F3438;
         }
 
         th {
             padding: 10px;
-            border-top: 1px solid rgba(0, 0, 0, 0.1);
-            border-right: 1px solid rgba(0, 0, 0, 0.1);
-            background-color: #2B6B53; /* Slightly lighter green */
+            background-color: #17684b; /* Slightly lighter green */
             color: #fff;
             text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.2);
-            font-weight: normal;
         }
 
         th .any {
@@ -58,43 +54,41 @@
             font-weight: normal;
             display: block;
             text-shadow: none;
-            color: rgba(0, 0, 0, 0.4);
+            color: rgba(255, 255, 255, 0.5);
         }
 
         td {
             padding: 0;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
         }
 
-        td>span {
-            color: #555;
+        td > span {
+            color: #bbb;
             padding: 10px;
             display: block;
             border: 2px solid transparent;
             transition: border 0.3s ease;
         }
 
-        td:nth-child(even)>span {
-            background-color: rgba(0, 0, 0, 0.02);
+        td:nth-child(even) > span {
+            background-color: rgba(255, 255, 255, 0.05);
         }
 
-        td:last-child>span,
-        td:nth-child(6)>span {
-            color: #2B6B53; /* Match lighter green */
+        td:last-child > span, td:nth-child(6) > span {
+            color: #17684b; /* Updated green */
         }
 
-        td.avui>span {
+        td.avui > span {
             font-weight: bold;
-            background-color: #2B6B53; /* Match lighter green */
+            background-color: #17684b;
             color: #fff;
             border: 2px solid rgba(0, 0, 0, 0.1);
         }
 
-        td.fora>span {
+        td.fora > span {
             opacity: 0.2;
         }
 
-        td>span:hover {
+        td > span:hover {
             background: #a57cb6;
             color: #fff;
         }
@@ -117,25 +111,33 @@
             top: 15px;
         }
 
-        .boto-next { 
-            right: 10px; 
-            padding-left: 13px; 
-        }
-        .boto-prev { 
-            left: 10px; 
-            padding-right: 13px; 
-        }
-
-        .boto-next:hover,
-        .boto-prev:hover {
+        .boto-next { right: 10px; padding-left: 13px; }
+        .boto-prev { left: 10px; padding-right: 13px; }
+        .boto-next:hover, .boto-prev:hover {
             background: rgba(0, 0, 0, 0.2);
         }
 
-        button:hover { 
-            cursor: pointer; 
+        button:hover { cursor: pointer; }
+        button:focus { outline: none; }
+
+        /* Scrollbar styles */
+        #calendari::-webkit-scrollbar {
+            width: 0px;
+            height: 0px;
         }
-        button:focus { 
-            outline: none; 
+
+        #calendari:hover::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        #calendari::-webkit-scrollbar-thumb {
+            background-color: #555;
+            border-radius: 4px;
+        }
+
+        #calendari::-webkit-scrollbar-track {
+            background-color: #2F3438;
         }
 
         footer {
@@ -147,8 +149,7 @@
             padding: 20px;
         }
 
-        footer a,
-        footer a:link {
+        footer a, footer a:link {
             color: #fff;
             text-decoration: none;
         }
@@ -159,15 +160,30 @@
         <div id="calendari"></div>
     </div>
     <script>
-        // Existing JavaScript remains unchanged
         var mesos = [
-            'January', 'February', 'March', 'April', 'May', 'June',
-            'July', 'August', 'September', 'October', 'November', 'December'
+            'January',
+            'February',
+            'March',
+            'April',
+            'May',
+            'June',
+            'July',
+            'August',
+            'September',
+            'October',
+            'November',
+            'December'
         ];
 
-        var dies = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-
-        var dies_abr = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+        var dies_abr = [
+            'Su',
+            'Mo',
+            'Tu',
+            'We',
+            'Th',
+            'Fr',
+            'Sa'
+        ];
 
         Number.prototype.pad = function(num) {
             var str = '';
@@ -188,11 +204,9 @@
             }
 
             var diff = data - new Date(original.getAttribute('data-actual'));
-
             diff = new Date(diff).getMonth();
 
             var e = document.createElement('table');
-
             e.className = diff === 0 ? 'amagat-esquerra' : 'amagat-dreta';
             e.innerHTML = '';
 
@@ -216,7 +230,7 @@
             boto_next.innerHTML = '&#9656;';
 
             titol.appendChild(boto_prev);
-            titol.appendChild(document.createElement('span')).innerHTML =
+            titol.appendChild(document.createElement('span')).innerHTML = 
                 mesos[data.getMonth()] + '<span class="any">' + data.getFullYear() + '</span>';
 
             titol.appendChild(boto_next);
@@ -243,12 +257,8 @@
             fila.innerHTML += '<th>' + dies_abr[0] + '</th>';
             e.appendChild(fila);
 
-            var inici_mes =
-                new Date(data.getFullYear(), data.getMonth(), -1).getDay();
-
-            var actual = new Date(data.getFullYear(),
-                data.getMonth(),
-                -inici_mes);
+            var inici_mes = new Date(data.getFullYear(), data.getMonth(), -1).getDay();
+            var actual = new Date(data.getFullYear(), data.getMonth(), -inici_mes);
 
             for (var s = 0; s < 6; s++) {
                 var fila = document.createElement('tr');
