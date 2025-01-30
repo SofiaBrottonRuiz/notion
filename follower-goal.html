@@ -9,14 +9,25 @@
       font-family: Arial, sans-serif;
       display: flex;
       justify-content: center;
-      align-items: center;
+      align-items: flex-start;
+      flex-direction: column;
       height: 100vh;
       margin: 0;
-      background-color: #f0f9f4;
+      background-color: #191919; /* Set background to #191919 */
+      color: white; /* Set text color to white */
+      padding: 20px;
+    }
+    .progress-bar-container {
+      width: 100%;
+      margin-bottom: 20px;
     }
     .progress-bar {
-      width: 300px;
+      width: 100%;
       text-align: center;
+      margin-bottom: 10px;
+      background-color: #333333; /* Darker background for the progress bars */
+      border-radius: 5px;
+      padding: 5px;
     }
     .indicator {
       display: flex;
@@ -27,37 +38,78 @@
       margin-top: 10px;
       font-size: 16px;
     }
+    .label {
+      font-weight: bold;
+      margin-bottom: 5px;
+      font-size: 18px;
+    }
   </style>
 </head>
 <body>
-  <div class="progress-bar">
-    <div class="indicator" id="indicator">
-      <!-- Leaves and flowers will go here -->
+  <!-- CosplayYT Progress Bar -->
+  <div class="progress-bar-container">
+    <div class="label">CosplayYT</div>
+    <div class="progress-bar">
+      <div class="indicator" id="cosplayYT"></div>
+      <div class="progress-text" id="cosplayYT-text">0%</div>
     </div>
-    <div class="progress-text" id="progress-text">0%</div>
+  </div>
+
+  <!-- GamingYT Progress Bar -->
+  <div class="progress-bar-container">
+    <div class="label">GamingYT</div>
+    <div class="progress-bar">
+      <div class="indicator" id="gamingYT"></div>
+      <div class="progress-text" id="gamingYT-text">0%</div>
+    </div>
+  </div>
+
+  <!-- Instagram Followers Progress Bar -->
+  <div class="progress-bar-container">
+    <div class="label">Instagram Followers</div>
+    <div class="progress-bar">
+      <div class="indicator" id="instagram"></div>
+      <div class="progress-text" id="instagram-text">0%</div>
+    </div>
+  </div>
+
+  <!-- Tiktok Followers Progress Bar -->
+  <div class="progress-bar-container">
+    <div class="label">Tiktok Followers</div>
+    <div class="progress-bar">
+      <div class="indicator" id="tiktok"></div>
+      <div class="progress-text" id="tiktok-text">0%</div>
+    </div>
   </div>
 
   <script>
-    // Set up your progress (replace these values as needed)
-    const currentProgress = 500; // Replace with actual progress
-    const target = 1000; // Replace with your goal
+    // Set up progress values for each goal
+    const goals = [
+      { id: "cosplayYT", current: 3, target: 20 },
+      { id: "gamingYT", current: 2, target: 15 },
+      { id: "instagram", current: 92, target: 120 },
+      { id: "tiktok", current: 32, target: 50 }
+    ];
 
-    // Calculate progress percentage
-    const progressPercent = Math.min((currentProgress / target) * 100, 100);
+    // Function to update progress bar
+    function updateProgressBar(goal) {
+      const progressPercent = Math.min((goal.current / goal.target) * 100, 100);
+      const completedUnits = Math.floor((progressPercent / 10)); // 1 unit = 10%
+      const totalUnits = 10;
 
-    // Generate the progress bar
-    const indicator = document.getElementById('indicator');
-    const progressText = document.getElementById('progress-text');
-    const completedUnits = Math.floor((progressPercent / 10)); // 1 unit = 10%
-    const totalUnits = 10;
+      const flowers = "🌸".repeat(completedUnits);
+      const leaves = "🍃".repeat(totalUnits - completedUnits);
 
-    // Create flowers and leaves
-    const flowers = "🌸".repeat(completedUnits);
-    const leaves = "🍃".repeat(totalUnits - completedUnits);
+      // Update the progress bar
+      const indicator = document.getElementById(goal.id);
+      const progressText = document.getElementById(goal.id + "-text");
 
-    // Update the DOM
-    indicator.textContent = flowers + leaves;
-    progressText.textContent = `${Math.round(progressPercent)}%`;
+      indicator.textContent = flowers + leaves;
+      progressText.textContent = `${Math.round(progressPercent)}%`;
+    }
+
+    // Initialize progress bars for each goal
+    goals.forEach(updateProgressBar);
   </script>
 </body>
 </html>
