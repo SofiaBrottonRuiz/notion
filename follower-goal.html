@@ -22,19 +22,20 @@
       width: 100%;
       margin-bottom: 10px; /* Space between each goal */
       display: flex;
-      justify-content: space-between; /* Items on the same line */
+      justify-content: flex-start; /* Align items to the left */
       align-items: center;
     }
     .goal-name {
       font-weight: bold;
       font-size: 18px;
       margin-right: 10px; /* Space between name and progress bar */
+      width: 150px; /* Set width for alignment */
     }
     .indicator {
       font-size: 24px;
+      margin-right: 10px; /* Small space between emojis and percentage */
     }
     .progress-text {
-      margin-left: 10px;
       font-size: 16px;
     }
   </style>
@@ -44,28 +45,28 @@
   <div class="goal-container">
     <div class="goal-name">CosplayYT</div>
     <div class="indicator" id="cosplayYT">🌸🌸🍃🍃🍃🍃🍃🍃🍃🍃</div>
-    <div class="progress-text" id="cosplayYT-text">15%</div>
+    <div class="progress-text" id="cosplayYT-text">(15%)</div>
   </div>
 
   <!-- GamingYT Goal -->
   <div class="goal-container">
     <div class="goal-name">GamingYT</div>
     <div class="indicator" id="gamingYT">🌸🌸🍃🍃🍃🍃🍃🍃🍃🍃</div>
-    <div class="progress-text" id="gamingYT-text">13%</div>
+    <div class="progress-text" id="gamingYT-text">(13%)</div>
   </div>
 
   <!-- Instagram Followers Goal -->
   <div class="goal-container">
     <div class="goal-name">Instagram Followers</div>
     <div class="indicator" id="instagram">🌸🌸🌸🍃🍃🍃🍃🍃🍃🍃</div>
-    <div class="progress-text" id="instagram-text">77%</div>
+    <div class="progress-text" id="instagram-text">(77%)</div>
   </div>
 
   <!-- Tiktok Followers Goal -->
   <div class="goal-container">
     <div class="goal-name">Tiktok Followers</div>
     <div class="indicator" id="tiktok">🌸🌸🍃🍃🍃🍃🍃🍃🍃🍃</div>
-    <div class="progress-text" id="tiktok-text">64%</div>
+    <div class="progress-text" id="tiktok-text">(64%)</div>
   </div>
 
   <script>
@@ -91,7 +92,7 @@
       const progressText = document.getElementById(goal.id + "-text");
 
       indicator.textContent = flowers + leaves;
-      progressText.textContent = `${Math.round(progressPercent)}%`;
+      progressText.textContent = `(${Math.round(progressPercent)}%)`;
     }
 
     // Initialize progress bars for each goal
