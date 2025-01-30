@@ -15,28 +15,30 @@
       margin: 0;
       background-color: #191919; /* Background color #191919 */
       color: white; /* Text color white */
-      padding: 20px;
+      padding: 10px; /* Reduced padding */
       text-align: left; /* Align text to the left for each goal */
+      overflow: hidden; /* Prevent scrolling */
+      box-sizing: border-box;
     }
     .goal-container {
       width: 100%;
-      margin-bottom: 10px; /* Space between each goal */
+      margin-bottom: 5px; /* Reduced space between each goal */
       display: flex;
       justify-content: flex-start; /* Align items to the left */
       align-items: center;
+      font-size: 14px; /* Reduced font size for everything */
     }
     .goal-name {
       font-weight: bold;
-      font-size: 18px;
-      margin-right: 10px; /* Space between name and progress bar */
-      width: 150px; /* Set width for alignment */
+      margin-right: 5px; /* Reduced space between name and progress bar */
+      width: 120px; /* Reduced width for goal name */
     }
     .indicator {
-      font-size: 24px;
-      margin-right: 10px; /* Small space between emojis and percentage */
+      font-size: 20px; /* Smaller emoji size */
+      margin-right: 5px; /* Smaller space between emojis and percentage */
     }
     .progress-text {
-      font-size: 16px;
+      font-size: 12px; /* Smaller percentage text */
     }
   </style>
 </head>
@@ -73,9 +75,9 @@
     // Set up progress values for each goal
     const goals = [
       { id: "cosplayYT", current: 3, target: 20 },
-      { id: "gamingYT", current: 2, target: 15 },
-      { id: "instagram", current: 92, target: 120 },
-      { id: "tiktok", current: 32, target: 50 }
+      { id: "gamingYT", current: 2, target: 20 },
+      { id: "instagram", current: 92, target: 130 },
+      { id: "tiktok", current: 32, target: 60 }
     ];
 
     // Function to update progress bar
