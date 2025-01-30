@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Progress Bar Widget</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f0f9f4;
+    }
+    .progress-bar {
+      width: 300px;
+      text-align: center;
+    }
+    .indicator {
+      display: flex;
+      justify-content: space-evenly;
+      font-size: 24px;
+    }
+    .progress-text {
+      margin-top: 10px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-bar">
+    <div class="indicator" id="indicator">
+      <!-- Leaves and flowers will go here -->
+    </div>
+    <div class="progress-text" id="progress-text">0%</div>
+  </div>
+
+  <script>
+    // Set up your progress (replace these values as needed)
+    const currentProgress = 500; // Replace with actual progress
+    const target = 1000; // Replace with your goal
+
+    // Calculate progress percentage
+    const progressPercent = Math.min((currentProgress / target) * 100, 100);
+
+    // Generate the progress bar
+    const indicator = document.getElementById('indicator');
+    const progressText = document.getElementById('progress-text');
+    const completedUnits = Math.floor((progressPercent / 10)); // 1 unit = 10%
+    const totalUnits = 10;
+
+    // Create flowers and leaves
+    const flowers = "🌸".repeat(completedUnits);
+    const leaves = "🍃".repeat(totalUnits - completedUnits);
+
+    // Update the DOM
+    indicator.textContent = flowers + leaves;
+    progressText.textContent = `${Math.round(progressPercent)}%`;
+  </script>
+</body>
+</html>
